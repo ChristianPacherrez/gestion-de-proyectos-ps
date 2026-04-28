@@ -1,0 +1,19 @@
+/* Global styles — extends the design-system */
+@import "../design-system/styles/globals.css";
+
+/* App-level overrides and utilities */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg-primary, #ffffff);
+  color: var(--color-text-primary, #101828);
+}

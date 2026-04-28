@@ -1,0 +1,217 @@
+/**
+ * Mock tasks keyed by projectId.
+ * Status: 'todo' | 'in_progress' | 'done'
+ */
+export const MOCK_TASKS = [
+  // ── Proyecto 1 — Rediseño de plataforma ───────────────────────────────────
+  {
+    id: 't1-1', projectId: '1',
+    name:          'Auditoría de diseño actual',
+    description:   'Revisar pantallas existentes y documentar problemas de UX.',
+    status:        'done',
+    dueDate:       '2026-04-01',
+    estimatedTime: '8h',
+  },
+  {
+    id: 't1-2', projectId: '1',
+    name:          'Definir sistema de componentes',
+    description:   'Crear biblioteca base en Figma: botones, inputs, cards y tipografía.',
+    status:        'in_progress',
+    dueDate:       '2026-04-20',
+    estimatedTime: '16h',
+  },
+  {
+    id: 't1-3', projectId: '1',
+    name:          'Rediseñar pantalla de login',
+    description:   '',
+    status:        'todo',
+    dueDate:       '2026-05-05',
+    estimatedTime: '4h',
+  },
+  {
+    id: 't1-4', projectId: '1',
+    name:          'Rediseñar dashboard principal',
+    description:   'Incluir métricas clave, accesos directos y actividad reciente.',
+    status:        'todo',
+    dueDate:       '2026-05-15',
+    estimatedTime: '12h',
+  },
+  {
+    id: 't1-5', projectId: '1',
+    name:          'Pruebas de usabilidad con usuarios',
+    description:   'Sesiones de testing con 5 usuarios reales.',
+    status:        'todo',
+    dueDate:       '2026-06-01',
+    estimatedTime: '10h',
+  },
+
+  // ── Proyecto 2 — App móvil iOS ────────────────────────────────────────────
+  {
+    id: 't2-1', projectId: '2',
+    name:          'Setup del proyecto en Xcode',
+    description:   '',
+    status:        'done',
+    dueDate:       '2026-04-05',
+    estimatedTime: '3h',
+  },
+  {
+    id: 't2-2', projectId: '2',
+    name:          'Diseño de pantallas principales',
+    description:   'Home, perfil, listado de items y detalle.',
+    status:        'in_progress',
+    dueDate:       '2026-04-25',
+    estimatedTime: '20h',
+  },
+  {
+    id: 't2-3', projectId: '2',
+    name:          'Autenticación con Face ID',
+    description:   '',
+    status:        'todo',
+    dueDate:       '2026-05-10',
+    estimatedTime: '6h',
+  },
+  {
+    id: 't2-4', projectId: '2',
+    name:          'Integración con API REST',
+    description:   'Conectar endpoints de listado, detalle y perfil de usuario.',
+    status:        'todo',
+    dueDate:       '2026-05-30',
+    estimatedTime: '14h',
+  },
+
+  // ── Proyecto 3 — Migración de base de datos ───────────────────────────────
+  {
+    id: 't3-1', projectId: '3',
+    name:          'Análisis de esquema actual',
+    description:   'Mapear tablas, índices y relaciones existentes.',
+    status:        'done',
+    dueDate:       '2026-03-15',
+    estimatedTime: '6h',
+  },
+  {
+    id: 't3-2', projectId: '3',
+    name:          'Script de migración v1',
+    description:   '',
+    status:        'done',
+    dueDate:       '2026-03-28',
+    estimatedTime: '8h',
+  },
+  {
+    id: 't3-3', projectId: '3',
+    name:          'Prueba en ambiente staging',
+    description:   'Ejecutar migración completa y validar integridad de datos.',
+    status:        'in_progress',
+    dueDate:       '2026-04-20',
+    estimatedTime: '5h',
+  },
+  {
+    id: 't3-4', projectId: '3',
+    name:          'Rollback plan documentado',
+    description:   '',
+    status:        'todo',
+    dueDate:       '2026-04-30',
+    estimatedTime: '3h',
+  },
+
+  // ── Proyecto 4 — Campaña de marketing Q2 ─────────────────────────────────
+  {
+    id: 't4-1', projectId: '4',
+    name:          'Brief creativo aprobado',
+    description:   '',
+    status:        'done',
+    dueDate:       '2026-02-01',
+    estimatedTime: '4h',
+  },
+  {
+    id: 't4-2', projectId: '4',
+    name:          'Diseño de piezas gráficas',
+    description:   'Banners, stories y posts para todas las plataformas.',
+    status:        'done',
+    dueDate:       '2026-02-20',
+    estimatedTime: '18h',
+  },
+  {
+    id: 't4-3', projectId: '4',
+    name:          'Programación de publicaciones',
+    description:   '',
+    status:        'done',
+    dueDate:       '2026-03-01',
+    estimatedTime: '2h',
+  },
+  {
+    id: 't4-4', projectId: '4',
+    name:          'Reporte de resultados Q2',
+    description:   'Análisis de métricas: alcance, engagement y conversiones.',
+    status:        'done',
+    dueDate:       '2026-03-31',
+    estimatedTime: '5h',
+  },
+
+  // ── Proyecto 5 — Integración con Stripe ──────────────────────────────────
+  {
+    id: 't5-1', projectId: '5',
+    name:          'Crear cuenta de Stripe',
+    description:   '',
+    status:        'done',
+    dueDate:       '2026-04-10',
+    estimatedTime: '1h',
+  },
+  {
+    id: 't5-2', projectId: '5',
+    name:          'Implementar checkout básico',
+    description:   'Flujo de pago único con Stripe Checkout hosted.',
+    status:        'in_progress',
+    dueDate:       '2026-05-01',
+    estimatedTime: '8h',
+  },
+  {
+    id: 't5-3', projectId: '5',
+    name:          'Webhooks de pago',
+    description:   'Manejar eventos: payment_intent.succeeded, invoice.paid, etc.',
+    status:        'todo',
+    dueDate:       '2026-05-20',
+    estimatedTime: '6h',
+  },
+  {
+    id: 't5-4', projectId: '5',
+    name:          'Portal de facturación',
+    description:   '',
+    status:        'todo',
+    dueDate:       '2026-06-10',
+    estimatedTime: '4h',
+  },
+
+  // ── Proyecto 6 — Auditoría de seguridad ──────────────────────────────────
+  {
+    id: 't6-1', projectId: '6',
+    name:          'Revisión de dependencias',
+    description:   'npm audit + revisión de CVEs conocidos.',
+    status:        'done',
+    dueDate:       '2026-04-05',
+    estimatedTime: '3h',
+  },
+  {
+    id: 't6-2', projectId: '6',
+    name:          'Análisis de endpoints expuestos',
+    description:   'Revisar autenticación, autorización y validación de inputs.',
+    status:        'in_progress',
+    dueDate:       '2026-04-25',
+    estimatedTime: '8h',
+  },
+  {
+    id: 't6-3', projectId: '6',
+    name:          'Pruebas de penetración',
+    description:   '',
+    status:        'todo',
+    dueDate:       '2026-05-10',
+    estimatedTime: '12h',
+  },
+  {
+    id: 't6-4', projectId: '6',
+    name:          'Informe final y remediación',
+    description:   'Documentar hallazgos y plan de corrección priorizado.',
+    status:        'todo',
+    dueDate:       '2026-05-20',
+    estimatedTime: '6h',
+  },
+];

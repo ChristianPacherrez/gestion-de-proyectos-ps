@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(ls -la .env*)",
+      "Bash(npm install:*)",
+      "Bash(ls -la /Users/christianpacherrez/Documents/Claude/Projects/gestion-de-proyectos/.env*)",
+      "Bash(npx vite *)",
+      "Bash(grep -E \"^/Users.*/\\(users|meetings|projects|tasks|quotes\\)\\(/|$\\)\")",
+      "Bash(npm info *)",
+      "Bash(node -e \"const q = require\\('./node_modules/quill/package.json'\\); console.log\\(q.version\\)\")"
+    ]
+  }
+}

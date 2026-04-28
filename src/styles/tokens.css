@@ -1,0 +1,128 @@
+/**
+ * Design system tokens — plain CSS custom properties.
+ * Mirrors src/design-system/styles/theme.css so the tokens are available
+ * in runtime without requiring Tailwind v4 processing.
+ *
+ * When the project is eventually configured with @tailwindcss/vite,
+ * these definitions will be superseded by the processed theme.css output.
+ */
+:root {
+
+  /* ── Typography ───────────────────────────────────────────────────────────── */
+  --text-xs: 0.75rem;        /* 12px */
+  --text-sm: 0.875rem;       /* 14px */
+  --text-md: 1rem;           /* 16px */
+  --text-lg: 1.125rem;       /* 18px */
+  --text-xl: 1.25rem;        /* 20px */
+
+  --text-xs--line-height: 1.125rem;   /* 18px */
+  --text-sm--line-height: 1.25rem;    /* 20px */
+  --text-md--line-height: 1.5rem;     /* 24px */
+
+  /* ── Border radius ────────────────────────────────────────────────────────── */
+  --radius-xs:   0.125rem;   /* 2px  */
+  --radius-sm:   0.25rem;    /* 4px  */
+  --radius-md:   0.375rem;   /* 6px  */
+  --radius-lg:   0.5rem;     /* 8px  */
+  --radius-xl:   0.75rem;    /* 12px */
+  --radius-2xl:  1rem;       /* 16px */
+  --radius-3xl:  1.5rem;     /* 24px */
+  --radius-full: 9999px;
+
+  /* ── Shadows ──────────────────────────────────────────────────────────────── */
+  --shadow-xs: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1),
+               0px 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0px 4px 6px -1px rgba(0, 0, 0, 0.1),
+               0px 2px 4px -2px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0px 12px 16px -4px rgba(0, 0, 0, 0.08),
+               0px 4px 6px -2px rgba(0, 0, 0, 0.03),
+               0px 2px 2px -1px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0px 20px 24px -4px rgba(0, 0, 0, 0.08),
+               0px 8px 8px -4px rgba(0, 0, 0, 0.03),
+               0px 3px 3px -1.5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0px 24px 48px -12px rgba(0, 0, 0, 0.18),
+                0px 4px 4px -2px rgba(0, 0, 0, 0.04);
+
+  /* ── Brand palette ────────────────────────────────────────────────────────── */
+  --color-brand-50:  #f9f5ff;
+  --color-brand-100: #f4ebff;
+  --color-brand-200: #e9d7fe;
+  --color-brand-300: #d6bbfb;
+  --color-brand-400: #b692f6;
+  --color-brand-500: #9e77ed;
+  --color-brand-600: #7f56d9;
+  --color-brand-700: #6941c6;
+  --color-brand-800: #53389e;
+  --color-brand-900: #42307d;
+  --color-brand-950: #2c1c5f;
+
+  /* ── Semantic — text ──────────────────────────────────────────────────────── */
+  --color-text-primary:           #101828;
+  --color-text-secondary:         #475467;
+  --color-text-tertiary:          #667085;
+  --color-text-quaternary:        #98a2b3;
+  --color-text-placeholder:       #98a2b3;
+  --color-text-white:             #ffffff;
+  --color-text-brand-primary:     #6941c6;
+  --color-text-brand-secondary:   #7f56d9;
+  --color-text-error-primary:     #b42318;
+  --color-text-warning-primary:   #b54708;
+  --color-text-success-primary:   #027a48;
+
+  /* ── Semantic — backgrounds ───────────────────────────────────────────────── */
+  --color-bg-primary:             #ffffff;
+  --color-bg-secondary:           #f9fafb;
+  --color-bg-tertiary:            #f2f4f7;
+  --color-bg-quaternary:          #eaecf0;
+  --color-bg-primary_hover:       #f9fafb;
+  --color-bg-secondary_hover:     #f2f4f7;
+  --color-bg-active:              #f2f4f7;
+  --color-bg-overlay:             rgba(16, 24, 40, 0.5);
+
+  --color-bg-brand-primary:       #f9f5ff;
+  --color-bg-brand-secondary:     #f4ebff;
+  --color-bg-brand-solid:         #7f56d9;
+  --color-bg-brand-solid_hover:   #6941c6;
+
+  --color-bg-error-primary:       #fef3f2;
+  --color-bg-error-secondary:     #fff1f0;
+  --color-bg-error-solid:         #f04438;
+  --color-bg-warning-primary:     #fffaeb;
+  --color-bg-warning-secondary:   #fef0c7;
+  --color-bg-success-primary:     #ecfdf3;
+  --color-bg-success-secondary:   #dcfce7;
+  --color-bg-success-solid:       #17b26a;
+
+  /* ── Semantic — borders ───────────────────────────────────────────────────── */
+  --color-border-primary:         #eaecf0;
+  --color-border-secondary:       #d0d5dd;
+  --color-border-tertiary:        #f2f4f7;
+  --color-border-error:           #f04438;
+  --color-border-brand:           #7f56d9;
+  --color-border-brand_alt:       #6941c6;
+
+  /* ── Semantic — foreground / icons ───────────────────────────────────────── */
+  --color-fg-primary:             #101828;
+  --color-fg-secondary:           #475467;
+  --color-fg-tertiary:            #667085;
+  --color-fg-quaternary:          #98a2b3;
+  --color-fg-white:               #ffffff;
+  --color-fg-secondary_hover:     #344054;
+  --color-fg-tertiary_hover:      #475467;
+  --color-fg-quaternary_hover:    #667085;
+
+  --color-fg-brand-primary:       #7f56d9;
+  --color-fg-brand-secondary:     #9e77ed;
+  --color-fg-brand-secondary_hover: #7f56d9;
+
+  --color-fg-error-primary:       #f04438;
+  --color-fg-error-secondary:     #fda29b;
+  --color-fg-warning-primary:     #f79009;
+  --color-fg-success-primary:     #17b26a;
+  --color-fg-success-secondary:   #4ade80;
+
+  /* ── Focus ring ───────────────────────────────────────────────────────────── */
+  --color-focus-ring:             rgba(127, 86, 217, 0.12);
+  --color-focus-ring-error:       rgba(240, 68, 56, 0.12);
+}
