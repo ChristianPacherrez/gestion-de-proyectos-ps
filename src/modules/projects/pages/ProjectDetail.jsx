@@ -17,6 +17,7 @@ import { TaskList, TaskFormModal, KanbanBoard, GanttView } from '../../tasks/com
 import { QuoteList, QuoteDetail } from '../../quotes/components';
 import ContactPickerModal from '../components/ContactPickerModal';
 import ProjectBrief       from '../components/ProjectBrief';
+import ShareGanttModal    from '../components/ShareGanttModal';
 
 // ─── Avatar palette — cycles across members ────────────────────────────────────
 const AVATAR_PALETTE = [
@@ -688,6 +689,7 @@ export default function ProjectDetail({ projectId }) {
   const [activeTab,          setActiveTab]          = useState('tasks');
   const [activeQuote,        setActiveQuote]        = useState(null);
   const [showContactPicker,  setShowContactPicker]  = useState(false);
+  const [showGanttShare,     setShowGanttShare]     = useState(false);
 
   // ── Derived permissions ────────────────────────────────────────────────────
   const canEdit    = canEditTask(role);
@@ -922,6 +924,41 @@ export default function ProjectDetail({ projectId }) {
                 })}
               </div>
 
+              {/* Compartir Gantt — owner only, only in gantt mode */}
+              {isOwner && viewMode === 'gantt' && (
+                <button
+                  onClick={() => setShowGanttShare(true)}
+                  style={{
+                    display:         'inline-flex',
+                    alignItems:      'center',
+                    gap:             '6px',
+                    padding:         '7px 14px',
+                    borderRadius:    '8px',
+                    border:          '1px solid #d0d5dd',
+                    backgroundColor: '#fff',
+                    color:           '#344054',
+                    fontSize:        '14px',
+                    fontWeight:      500,
+                    cursor:          'pointer',
+                    whiteSpace:      'nowrap',
+                    boxShadow:       '0px 1px 2px rgba(0,0,0,0.05)',
+                    fontFamily:      'inherit',
+                    transition:      'all 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#7f56d9'; e.currentTarget.style.color = '#6941c6'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#d0d5dd'; e.currentTarget.style.color = '#344054'; }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="18" cy="5"  r="3" />
+                    <circle cx="6"  cy="12" r="3" />
+                    <circle cx="18" cy="19" r="3" />
+                    <line x1="8.59"  y1="13.51" x2="15.42" y2="17.49" />
+                    <line x1="15.41" y1="6.51"  x2="8.59"  y2="10.49" />
+                  </svg>
+                  Compartir Gantt
+                </button>
+              )}
+
               {/* Nueva tarea — only for users who can edit */}
               {canEdit && (
                 <button
@@ -1089,6 +1126,15 @@ export default function ProjectDetail({ projectId }) {
           onAdd={addMemberFromContact}
           onInvite={inviteByEmail}
           onClose={() => setShowContactPicker(false)}
+        />
+      )}
+
+      {/* Gantt share modal — solo owner */}
+      {showGanttShare && isOwner && (
+        <ShareGanttModal
+          projectId={projectId}
+          isOpen={showGanttShare}
+          onClose={() => setShowGanttShare(false)}
         />
       )}
 

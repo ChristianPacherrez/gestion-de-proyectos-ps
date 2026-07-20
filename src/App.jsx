@@ -16,6 +16,7 @@ import QuotesPage                 from './modules/quotes/pages/QuotesPage';
 import MeetingsPage               from './modules/meetings/pages/MeetingsPage';
 import AccountPage                from './modules/account/pages/AccountPage';
 import PublicBriefPage            from './modules/projects/components/PublicBriefPage';
+import PublicGanttPage            from './modules/projects/components/PublicGanttPage';
 import ForgotPasswordPage         from './pages/ForgotPasswordPage';
 import ResetPasswordPage          from './pages/ResetPasswordPage';
 
@@ -24,6 +25,11 @@ import ResetPasswordPage          from './pages/ResetPasswordPage';
 
 function getPublicBriefToken() {
   const match = window.location.pathname.match(/^\/brief\/public\/([^/]+)\/?$/);
+  return match ? match[1] : null;
+}
+
+function getPublicGanttToken() {
+  const match = window.location.pathname.match(/^\/share\/gantt\/([^/]+)\/?$/);
   return match ? match[1] : null;
 }
 
@@ -122,8 +128,10 @@ function AppGate() {
 // ─── App root ─────────────────────────────────────────────────────────────────
 export default function App() {
   // ── Public routes — rendered BEFORE auth gate, no session required ──────────
-  const publicToken = getPublicBriefToken();
+  const publicToken      = getPublicBriefToken();
+  const publicGanttToken = getPublicGanttToken();
   if (publicToken)           return <PublicBriefPage token={publicToken} />;
+  if (publicGanttToken)      return <PublicGanttPage token={publicGanttToken} />;
   if (isForgotPasswordRoute()) return <ForgotPasswordPage />;
   if (isResetPasswordRoute())  return <ResetPasswordPage />;
 

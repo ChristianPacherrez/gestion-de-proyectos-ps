@@ -66,7 +66,7 @@ const PADDING_DAYS  = 2;
 const RESIZE_HIT    = 10; // px — width of the resize handle hit area
 
 // ─── Empty state ──────────────────────────────────────────────────────────────
-function EmptyGantt({ onNew }) {
+function EmptyGantt({ onNew, readonly = false }) {
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center',
@@ -78,14 +78,18 @@ function EmptyGantt({ onNew }) {
         Ninguna tarea tiene fechas asignadas.
       </p>
       <p style={{ margin: 0, fontSize: '12px', color: '#98a2b3', textAlign: 'center' }}>
-        Agrega una fecha de inicio o entrega para ver las barras aquí.
+        {readonly
+          ? 'No hay tareas con fechas para mostrar en el cronograma.'
+          : 'Agrega una fecha de inicio o entrega para ver las barras aquí.'}
       </p>
-      <button
-        onClick={onNew}
-        style={{ marginTop: '8px', padding: '7px 16px', borderRadius: '7px', border: '1px solid #6941c6', backgroundColor: '#7f56d9', color: '#fff', fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}
-        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#6941c6'; }}
-        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#7f56d9'; }}
-      >+ Nueva tarea</button>
+      {!readonly && (
+        <button
+          onClick={onNew}
+          style={{ marginTop: '8px', padding: '7px 16px', borderRadius: '7px', border: '1px solid #6941c6', backgroundColor: '#7f56d9', color: '#fff', fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#6941c6'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#7f56d9'; }}
+        >+ Nueva tarea</button>
+      )}
     </div>
   );
 }
@@ -94,7 +98,7 @@ function EmptyGantt({ onNew }) {
 // Rendered as position:fixed so overflow:hidden on the root card doesn't clip it.
 function GanttTooltip({ data }) {
   if (!data) return null;
-  const { task, x, y } = data;
+  const { task, x, y, readonly } = data;
 
   const start = parseDate(task.startDate);
   const end   = parseDate(task.dueDate);
@@ -165,12 +169,14 @@ function GanttTooltip({ data }) {
         )}
       </div>
 
-      {/* Hint */}
-      <div style={{ marginTop: '7px', paddingTop: '6px', borderTop: '1px solid rgba(255,255,255,0.08)', fontSize: '10px', color: '#64748b', display: 'flex', gap: '8px' }}>
-        <span>⟷ arrastrar</span>
-        <span>↔ resize</span>
-        <span>✎ clic editar</span>
-      </div>
+      {/* Hint — hidden in readonly mode */}
+      {!readonly && (
+        <div style={{ marginTop: '7px', paddingTop: '6px', borderTop: '1px solid rgba(255,255,255,0.08)', fontSize: '10px', color: '#64748b', display: 'flex', gap: '8px' }}>
+          <span>⟷ arrastrar</span>
+          <span>↔ resize</span>
+          <span>✎ clic editar</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -179,11 +185,12 @@ function GanttTooltip({ data }) {
 /**
  * Props:
  *   tasks          — full task array
- *   onEdit         — (task) open edit modal
- *   onNew          — () open new-task modal
- *   onUpdateDates  — (taskId, { startDate?, dueDate? }) persist new dates
+ *   onEdit         — (task) open edit modal          [ignored when readonly]
+ *   onNew          — () open new-task modal          [ignored when readonly]
+ *   onUpdateDates  — (taskId, dates) persist dates   [ignored when readonly]
+ *   readonly       — disables all interactions (public Gantt view)
  */
-export default function GanttView({ tasks, onEdit, onNew, onUpdateDates }) {
+export default function GanttView({ tasks, onEdit, onNew, onUpdateDates, readonly = false }) {
 
   // ── Move drag state ──────────────────────────────────────────────────────────
   const dragRef    = useRef(null); // { taskId, startX, origStartDate, origDueDate, didMove }
@@ -201,7 +208,7 @@ export default function GanttView({ tasks, onEdit, onNew, onUpdateDates }) {
 
   // ── Derived data ─────────────────────────────────────────────────────────────
   const datedTasks = tasks.filter((t) => t.startDate || t.dueDate);
-  if (!datedTasks.length) return <EmptyGantt onNew={onNew} />;
+  if (!datedTasks.length) return <EmptyGantt onNew={onNew} readonly={readonly} />;
 
   // ── Timeline bounds ─────────────────────────────────────────────────────────
   let minDate = null;
@@ -287,6 +294,7 @@ export default function GanttView({ tasks, onEdit, onNew, onUpdateDates }) {
 
   // ── MOVE handlers ─────────────────────────────────────────────────────────────
   function handleBarPointerDown(e, task) {
+    if (readonly) return;
     if (resizingId) return;           // resize in progress — ignore
     if (e.button !== 0) return;
     e.preventDefault();
@@ -336,6 +344,7 @@ export default function GanttView({ tasks, onEdit, onNew, onUpdateDates }) {
 
   // ── RESIZE handlers ───────────────────────────────────────────────────────────
   function handleResizePointerDown(e, task) {
+    if (readonly) return;
     if (draggingId) return;
     if (e.button !== 0) return;
     e.preventDefault();
@@ -382,7 +391,7 @@ export default function GanttView({ tasks, onEdit, onNew, onUpdateDates }) {
   // ── TOOLTIP handlers ──────────────────────────────────────────────────────────
   function handleBarMouseEnter(e, task) {
     if (anyDrag) return;
-    setTooltip({ task, x: e.clientX, y: e.clientY });
+    setTooltip({ task, x: e.clientX, y: e.clientY, readonly });
   }
   function handleBarMouseMove(e) {
     if (anyDrag || !tooltip) return;
@@ -432,18 +441,18 @@ export default function GanttView({ tasks, onEdit, onNew, onUpdateDates }) {
                 return (
                   <div
                     key={task.id}
-                    onClick={() => onEdit(task)}
+                    onClick={() => { if (!readonly) onEdit(task); }}
                     title={task.name}
                     style={{
                       height: `${ROW_H}px`, display: 'flex', alignItems: 'center',
                       gap: '8px', padding: '0 16px', fontSize: '13px', fontWeight: 500,
                       color: task.status === 'done' ? '#94a3b8' : '#334155',
                       textDecoration: task.status === 'done' ? 'line-through' : 'none',
-                      borderBottom: '1px solid #f1f5f9', cursor: 'pointer',
+                      borderBottom: '1px solid #f1f5f9', cursor: readonly ? 'default' : 'pointer',
                       backgroundColor: isEven ? '#fff' : '#fafafa',
                       transition: 'background-color 0.1s', userSelect: 'none',
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#f0f9ff'; }}
+                    onMouseEnter={(e) => { if (!readonly) e.currentTarget.style.backgroundColor = '#f0f9ff'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = isEven ? '#fff' : '#fafafa'; }}
                   >
                     <div style={{ width: '8px', height: '8px', borderRadius: '50%', flexShrink: 0, backgroundColor: cfg.solid }} />
@@ -663,7 +672,7 @@ export default function GanttView({ tasks, onEdit, onNew, onUpdateDates }) {
                           paddingLeft:     isPoint ? 0 : '10px',
                           justifyContent:  isPoint ? 'center' : 'flex-start',
                           overflow:        'hidden',
-                          cursor:          isMoving ? 'grabbing' : 'grab',
+                          cursor:          readonly ? 'default' : isMoving ? 'grabbing' : 'grab',
                           zIndex:          isAnyActive ? 10 : 6,
                           touchAction:     'none',
                           transform:       `translateX(${snappedPx}px)`,  // 0 during resize
@@ -742,8 +751,8 @@ export default function GanttView({ tasks, onEdit, onNew, onUpdateDates }) {
                           </div>
                         )}
 
-                        {/* ── Resize handle — right edge ── */}
-                        {!isPoint && (
+                        {/* ── Resize handle — right edge (hidden in readonly) ── */}
+                        {!isPoint && !readonly && (
                           <div
                             onPointerDown={(e) => handleResizePointerDown(e, task)}
                             onPointerMove={handleResizePointerMove}
@@ -819,14 +828,18 @@ export default function GanttView({ tasks, onEdit, onNew, onUpdateDates }) {
               </div>
               <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 500 }}>Fecha única</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1 }}>⟷</span>
-              <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 500 }}>Mover</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1 }}>↔</span>
-              <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 500 }}>Redimensionar</span>
-            </div>
+            {!readonly && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1 }}>⟷</span>
+                <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 500 }}>Mover</span>
+              </div>
+            )}
+            {!readonly && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1 }}>↔</span>
+                <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 500 }}>Redimensionar</span>
+              </div>
+            )}
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <svg width="22" height="8" viewBox="0 0 22 8" fill="none">
                 <path d="M1 4h16" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#leg-arr)"/>
