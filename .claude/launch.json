@@ -5,13 +5,20 @@
       "name": "Dev Server",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 5173
+      "port": 5174
     },
     {
       "name": "Preview Server",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "preview"],
       "port": 4173
+    },
+    {
+      "name": "kubik-frontend",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "cwd": "/Users/christianpacherrez/Documents/Claude/Projects/kubik/frontend",
+      "port": 3000
     }
   ]
 }
